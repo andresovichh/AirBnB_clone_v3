@@ -73,7 +73,7 @@ class FileStorage:
         """
         returns an object based on the class name and id
         """
-        key = cls + '.' + id
+        key = str(cls) + '.' + id
         if key in self.__objects:
             return self.__objects[key]
         return None
