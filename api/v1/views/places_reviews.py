@@ -13,7 +13,7 @@ from models.place import Place
 def show_all_reviews():
     """shows all reviews"""
 
-    reviews = storage.all(Review)
+    reviews = storage.all(Place, Review)
     new_list = []
     for review in reviews.values():
         new_list.append(review.to_dict())
