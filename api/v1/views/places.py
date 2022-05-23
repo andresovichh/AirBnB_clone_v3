@@ -48,11 +48,11 @@ def delete_place_with_id(place_id):
     return jsonify({}), 200
 
 
-@app_views.route("/cities/<string:city_id>/places", methods=['POST'],
+@app_views.route('/cities/<string:city_id>/places', methods=['POST'],
                  strict_slashes=False)
-def create_place_with_city_id(city_id):
-    """ creates place with given city id """
-
+def post_place(city_id):
+    """create a new place with given city id"""
+    
     city = storage.get(City, city_id)
     if city is None:
         abort(404)
@@ -61,13 +61,15 @@ def create_place_with_city_id(city_id):
         abort(400, 'Not a JSON')
     if 'user_id' not in data:
         abort(400, 'Missing user_id')
+    user = storage.get("User", data['user_id'])
+    if user is None:
+        abort(404)
     if 'name' not in data:
         abort(400, 'Missing name')
-    place = Place(**data)
-    place.city_id = city_id
-    storage.new(place)
-    storage.save()
-    return jsonify(place.to_dict()), 201
+    data['city_id'] = city_id
+    new_place = Place(**data)
+    new_place.save()
+    return jsonify(new_place.to_dict()), 201
 
 
 @app_views.route("/places/string:place_id", methods=['PUT'],
