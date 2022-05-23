@@ -55,6 +55,8 @@ def post_users():
 
     if "email" not in data:
         abort(400, description="Missing email")
+    if "password" not in data:
+        abort(400, description="Missing password")
 
     obj = User(**data)
     storage.new(obj)
