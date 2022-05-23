@@ -5,7 +5,7 @@ from api.v1.views import app_views
 from flask import abort, jsonify, make_response, request
 from models import storage
 from models.review import Review
-from models.place import Place
+
 
 
 @app_views.route("/places/<place_id>/reviews",
@@ -13,7 +13,7 @@ from models.place import Place
 def show_all_reviews():
     """shows all reviews"""
 
-    reviews = storage.all(Place, Review)
+    reviews = storage.all("Place", Review)
     new_list = []
     for review in reviews.values():
         new_list.append(review.to_dict())
@@ -49,7 +49,7 @@ def delete_review_with_id(review_id):
 def show_reviews_with_place_id(place_id):
     """shows reviews with given place id"""
 
-    place = storage.get(Place, place_id)
+    place = storage.get("Place", place_id)
     if place is None:
         abort(404)
     reviews = request.get_json()
