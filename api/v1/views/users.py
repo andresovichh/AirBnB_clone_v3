@@ -53,8 +53,8 @@ def post_users():
         abort(400, description="Not a JSON")
     data = request.get_json()
 
-    if "name" not in data:
-        abort(400, description="Missing name")
+    if "email" not in data:
+        abort(400, description="Missing email")
 
     obj = User(**data)
     storage.new(obj)
