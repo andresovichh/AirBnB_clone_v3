@@ -52,11 +52,22 @@ def show_reviews_with_place_id(place_id):
     place = storage.get(Place, place_id)
     if place is None:
         abort(404)
-    reviews = place.reviews
-    new_list = []
-    for review in reviews:
-        new_list.append(review.to_dict())
-    return jsonify(new_list)
+    reviews = request.get_json()
+    if reviews is None:
+        abort(400, 'Not a JSON')
+    if 'user_id' not in reviews:
+        abort(400, 'Missing user_id')
+    if 'text' not in reviews:
+        abort(400, 'Missing text')
+    
+    reviews.pop('id', None)
+    reviews.pop('created_at', None)
+    reviews.pop('updated_at', None)
+    reviews.update({'place_id': place_id, "user_id": reviews['user_id']})
+
+    reviews = Review(**reviews)
+    reviews.save()
+    return jsonify(reviews.to_dict()), 201
 
 
 @app_views.route("/reviews/<string:review_id>", methods=['POST'],
