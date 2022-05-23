@@ -61,3 +61,27 @@ def post_review(place_id):
     review.user_id = data['user_id']
     review.save()
     return jsonify(review.to_dict()), 201
+
+
+@app_views.route("/reviews/<review_id>", methods=['PUT'],
+                 strict_slashes=False)
+def put_review(review_id):
+    """update review by id"""
+    review = storage.get("Review", review_id)
+    if not review:
+        abort(404)
+    data = request.get_json()
+    if data is None:
+        abort(400, 'Not a JSON')
+    if 'user_id' in data:
+        user = storage.get("User", data['user_id'])
+        if not user:
+            abort(404)
+        review.user_id = data['user_id']
+    if 'place_id' in data:
+        place = storage.get("Place", data['place_id'])
+        if not place:
+            abort(404)
+        review.place_id = data['place_id']
+    review.save()
+    return jsonify(review.to_dict()), 200
