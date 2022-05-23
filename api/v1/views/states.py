@@ -42,3 +42,21 @@ def delete_with_id(state_id):
     storage.delete(data)
     storage.save()
     return jsonify({}), 200
+
+
+@app_views.route("/states", methods=['POST'],
+                 strict_slashes=False)
+def post():
+    """ creates something new with parameters """
+
+    if not request.is_json:
+        abort(400, description="Not a JSON")
+    data = request.get_json()
+
+    if "name" not in data:
+        abort(400, description="Missing name")
+
+    obj = State(**data)
+    storage.new(obj)
+    storage.save()
+    return obj.to_dict(), 201
