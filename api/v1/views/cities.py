@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 
+""" this is a module that lets us import all our views """
+
 from api.v1.views import app_views
-from flask import Flask, Blueprint, render_template, jsonify
-from flask import request, abort, make_response
+from flask import abort, jsonify, make_response, request
 from models import storage
 from models.city import City
 from models.state import State
