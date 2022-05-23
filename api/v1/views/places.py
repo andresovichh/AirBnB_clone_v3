@@ -8,9 +8,9 @@ from models.city import City
 from models.state import State
 from models.place import Place
 
+
 @app_views.route("/cities/<string:city_id>/places", methods=['GET'],
                  strict_slashes=False)
-
 def show_all_places_with_city_id(city_id):
     """ shows all places with given city id """
 
@@ -52,7 +52,6 @@ def delete_place_with_id(place_id):
                  strict_slashes=False)
 def post_place(city_id):
     """create a new place with given city id"""
-    
     city = storage.get(City, city_id)
     if city is None:
         abort(404)
@@ -84,7 +83,8 @@ def update_place_with_id(place_id):
     if data is None:
         abort(400, 'Not a JSON')
     for attr, val in data.items():
-        if attr not in ['id', 'user_id', 'city_id', 'created_at', 'updated_at']:
+        if attr not in ['id', 'user_id', 'city_id', 'created_at',
+                        'updated_at']:
             setattr(place, attr, val)
-    storage.save()
+    place.save()
     return jsonify(place.to_dict()), 200
