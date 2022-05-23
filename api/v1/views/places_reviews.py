@@ -8,7 +8,8 @@ from models.review import Review
 from models.place import Place
 
 
-@app_views.route("/places/<string:place_id>/reviews", methods=['GET'], strict_slashes=False)
+@app_views.route("/places/<string:place_id>/reviews",
+                 methods=['GET'], strict_slashes=False)
 def show_all_reviews():
     """shows all reviews"""
 
@@ -69,12 +70,9 @@ def post_review(review_id):
     data = request.get_json()
     if data is None:
         abort(400, 'Not a JSON')
-    if 'user_id' not in data:
-        abort(400, 'Missing user_id')
-    review.user_id = data['user_id']
-    if 'text' in data:
-        review.text = data['text']
-    if 'place_id' in data:
-        review.place_id = data['place_id']
-    storage.save()
+    for key, value in data.items():
+        if key not in ['id', 'user_id', 'city_id', 'created_at',
+                       'updated_at']:
+            setattr(review, key, value)
+    review.save()
     return jsonify(review.to_dict()), 201
