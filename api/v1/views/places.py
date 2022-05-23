@@ -48,7 +48,7 @@ def delete_place_with_id(place_id):
     return jsonify({}), 200
 
 
-@app_views.route("/cities/<string:city_id>/places", methods=['POST'],
+@app_views.route("/places/<string:city_id>/places", methods=['POST'],
                  strict_slashes=False)
 def create_place_with_city_id(city_id):
     """ creates place with given city id """
