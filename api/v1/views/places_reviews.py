@@ -78,6 +78,8 @@ def put_review(review_id):
         if not user:
             abort(404)
         review.user_id = data['user_id']
+    if 'text' in data:
+        review.text = data['text']
     if 'place_id' in data:
         place = storage.get("Place", data['place_id'])
         if not place:
