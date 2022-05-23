@@ -8,9 +8,9 @@ from models.city import City
 from models.state import State
 from models.place import Place
 
+
 @app_views.route("/cities/<string:city_id>/places", methods=['GET'],
                  strict_slashes=False)
-
 def show_all_places_with_city_id(city_id):
     """ shows all places with given city id """
 
@@ -67,6 +67,7 @@ def create_place_with_city_id(city_id):
     new_place.city_id = city_id
     new_place.save()
     return jsonify(new_place.to_dict()), 201
+
 
 @app_views.route("/places/<string:place_id>/places", methods=['PUT'],
                  strict_slashes=False)
