@@ -83,10 +83,8 @@ def update_place_with_id(place_id):
     data = request.get_json()
     if data is None:
         abort(400, 'Not a JSON')
-    if 'user_id' in data:
-        place.user_id = data['user_id']
-    if 'name' in data:
-        place.name = data['name']
-
+    for attr, val in data.items():
+        if attr not in ['id', 'user_id', 'city_id', 'created_at', 'updated_at']:
+            setattr(place, attr, val)
     storage.save()
     return jsonify(place.to_dict()), 200
