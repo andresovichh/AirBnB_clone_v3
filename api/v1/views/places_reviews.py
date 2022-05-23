@@ -59,7 +59,7 @@ def show_reviews_with_place_id(place_id):
         abort(400, 'Missing user_id')
     if 'text' not in reviews:
         abort(400, 'Missing text')
-    
+
     reviews.pop('id', None)
     reviews.pop('created_at', None)
     reviews.pop('updated_at', None)
