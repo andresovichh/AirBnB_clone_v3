@@ -21,3 +21,14 @@ def show_all_reviews():
     for review in reviews.values():
         new_list.append(review.to_dict())
     return jsonify(new_list)
+
+
+@app_views.route("/reviews/<review_id>", methods=['GET'],
+                 strict_slashes=False)
+def show_review_with_id(review_id):
+    """shows review with given id"""
+
+    review = storage.get(Review, review_id)
+    if review is None:
+        abort(404)
+    return jsonify(review.to_dict())
