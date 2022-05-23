@@ -11,10 +11,10 @@ from models.place import Place
 
 @app_views.route("/places/<place_id>/reviews",
                  methods=['GET'], strict_slashes=False)
-def show_all_reviews():
+def show_all_reviews(place_id):
     """shows all reviews"""
 
-    reviews = storage.all(Place, Review)
+    reviews = storage.all(Place, place_id)
     if reviews is None:
         abort(404)
     new_list = []
@@ -28,7 +28,7 @@ def show_all_reviews():
 def show_review_with_id(review_id):
     """shows review with given id"""
 
-    review = storage.get(Review, review_id)
+    review = storage.get("Review", review_id)
     if review is None:
         abort(404)
     return jsonify(review.to_dict())
